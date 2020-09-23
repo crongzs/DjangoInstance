@@ -1,0 +1,3 @@
+celery
+redis
+django_celery_results

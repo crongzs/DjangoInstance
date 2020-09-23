@@ -1,0 +1,1 @@
+celery -A django_celery_docker worker -l info

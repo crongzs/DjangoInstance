@@ -1,0 +1,1 @@
+python manage.py migrate && uvicorn --host 0.0.0.0 --port 8000 django_celery_docker.asgi:application

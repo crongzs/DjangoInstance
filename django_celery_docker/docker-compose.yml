@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    volumes:
+      - redis:/data
+
+  db:
+    image: postgres
+    container_name: postgresql
+    restart: always
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: web
+    links:
+      - db
+      - redis
+    command: sh start_web.sh
+
+  celery:
+    build: .
+    container_name: celery
+    links:
+      - db
+      - redis
+    command: sh start_celery.sh
+
+  nginx:
+    build: ./dockers/nginx
+    container_name: nginx
+    ports:
+      - 80:80
+    links:
+      - web
+
+volumes:
+  postgresql:
+  redis:
